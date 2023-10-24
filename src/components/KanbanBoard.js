@@ -38,6 +38,10 @@ const KanbanBoard = () => {
     },
   ]);
 
+  const getStatusCount = (status) => {
+    return tasks.filter((task) => task.status === status).length;
+  };
+
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [newTaskDescription, setNewTaskDescription] = useState("");
@@ -136,7 +140,6 @@ const KanbanBoard = () => {
   };
 
   const saveTask = () => {
-    // Update the task in your tasks list with the modified task
     const updatedTasks = tasks.map((task) =>
       task.id === selectedTask.id ? selectedTask : task
     );
@@ -160,22 +163,27 @@ const KanbanBoard = () => {
         onDrop={(e) => handleDrop(e, "Not Started")}
       >
         <div className="flex justify-between">
-          <h3 className="bg-red-200 px-1 mx-1 rounded w-fit text-sm">
-            Not started
-          </h3>
+          <div className="flex gap-2">
+            <h3 className="bg-red-200 px-1 mx-1 rounded w-fit text-sm">
+              Not started 
+            </h3>
+            <span className="text-sm text-gray-400">
+              {getStatusCount("Not Started")}   
+            </span>
+          </div>
           <div className="space-x-1 p-0 h-0">
             <button>
-              <EllipsisIcon className="w-5 h-5 text-gray-400 hover:text-gray-800" />
+              <EllipsisIcon className="w-5 h-5 text-gray-400 hover:text-gray-800  transition-colors" />
             </button>
             <button onClick={() => openCreateModal("Not Started")}>
-              <PlusIcon className="w-5 h-5 text-gray-400 hover:text-gray-800" />
+              <PlusIcon className="w-5 h-5 text-gray-400 hover:text-gray-800  transition-colors" />
             </button>
           </div>
         </div>
         {renderTaskCards("Not Started")}
         <button
           onClick={() => openCreateModal("Not Started")}
-          className="bg-white p-2 mt-2 text-sm cursor-pointer text-gray-400 hover:text-gray-800 flex gap-1 items-center justify-center"
+          className="bg-white p-2 mt-2 text-sm cursor-pointer text-gray-400 hover:text-gray-800 flex gap-1 items-center justify-center  transition-colors"
           draggable
         >
           <PlusIcon className="w-5 h-5" />
@@ -188,22 +196,27 @@ const KanbanBoard = () => {
         onDrop={(e) => handleDrop(e, "In Progress")}
       >
         <div className="flex justify-between">
-          <h2 className="bg-blue-200 px-1 mx-1 rounded w-fit text-sm">
-            In progress
-          </h2>
+        <div className="flex gap-2">
+            <h3 className="bg-yellow-200 px-1 mx-1 rounded w-fit text-sm">
+              In progress
+            </h3>
+            <span className="text-sm text-gray-400">
+              {getStatusCount("In Progress")}   
+            </span>
+          </div>
           <div className="space-x-1 p-0 h-0">
             <button>
-              <EllipsisIcon className="w-5 h-5 text-gray-400 hover:text-gray-800" />
+              <EllipsisIcon className="w-5 h-5 text-gray-400 hover:text-gray-800  transition-colors" />
             </button>
             <button onClick={() => openCreateModal("In Progress")}>
-              <PlusIcon className="w-5 h-5 text-gray-400 hover:text-gray-800" />
+              <PlusIcon className="w-5 h-5 text-gray-400 hover:text-gray-800  transition-colors" />
             </button>
           </div>
         </div>
         {renderTaskCards("In Progress")}
         <button
           onClick={() => openCreateModal("In Progress")}
-          className="bg-white p-2 mt-2 text-sm cursor-pointer text-gray-400 hover:text-gray-800 flex gap-1 items-center justify-center"
+          className="bg-white p-2 mt-2 text-sm cursor-pointer text-gray-400 hover:text-gray-800 flex gap-1 items-center justify-center  transition-colors"
           draggable
         >
           <PlusIcon className="w-5 h-5" />
@@ -216,22 +229,27 @@ const KanbanBoard = () => {
         onDrop={(e) => handleDrop(e, "Completed")}
       >
         <div className="flex justify-between">
-          <h2 className="bg-green-200 px-1 mx-1 rounded w-fit text-sm">
-            Completed
-          </h2>
+        <div className="flex gap-2">
+            <h3 className="bg-green-200 px-1 mx-1 rounded w-fit text-sm">
+              Completed
+            </h3>
+            <span className="text-sm text-gray-400">
+              {getStatusCount("Completed")}   
+            </span>
+          </div>
           <div className="space-x-1 p-0 h-0">
             <button>
-              <EllipsisIcon className="w-5 h-5 text-gray-400 hover:text-gray-800" />
+              <EllipsisIcon className="w-5 h-5 text-gray-400 hover:text-gray-800  transition-colors" />
             </button>
             <button onClick={() => openCreateModal("Completed")}>
-              <PlusIcon className="w-5 h-5 text-gray-400 hover:text-gray-800" />
+              <PlusIcon className="w-5 h-5 text-gray-400 hover:text-gray-800  transition-colors" />
             </button>
           </div>
         </div>
         {renderTaskCards("Completed")}
         <button
           onClick={() => openCreateModal("Completed")}
-          className="bg-white p-2 mt-2 text-sm cursor-pointer text-gray-400 hover:text-gray-800 flex gap-1 items-center justify-center"
+          className="bg-white p-2 mt-2 text-sm cursor-pointer text-gray-400 hover:text-gray-800 flex gap-1 items-center justify-center  transition-colors"
           draggable
         >
           <PlusIcon className="w-5 h-5" />
@@ -287,7 +305,7 @@ const KanbanBoard = () => {
                   <div className="mt-4">
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover-bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={addTask}
                     >
                       Create new task
@@ -348,7 +366,7 @@ const KanbanBoard = () => {
                   <div className="mt-4 space-x-2">
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover-bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      className="inline-flex justify-center cursor-pointer rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={saveTask}
                       disabled={isSaveButtonDisabled}
                     >
@@ -356,7 +374,7 @@ const KanbanBoard = () => {
                     </button>
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover-bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
                       onClick={deleteTask}
                     >
                       Delete task

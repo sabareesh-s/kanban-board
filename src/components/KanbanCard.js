@@ -3,7 +3,7 @@ import React from 'react';
 const KanbanCard = ({ id, title, status, onDragStart, onClick }) => {
   return (
     <div
-      className="bg-white p-2 rounded shadow mt-2 border text-sm font-semibold cursor-pointer"
+      className="bg-white p-2 rounded shadow mt-2 border text-sm font-semibold cursor-pointer hover:bg-slate-50 transition-colors"
       draggable
       onDragStart={(e) => onDragStart(e, id, status)}
       onClick={() => onClick()}
