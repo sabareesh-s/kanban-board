@@ -212,9 +212,7 @@ const KanbanBoard = () => {
           <div className="flex justify-between">
             <div className="flex gap-2">
               <h3
-                className={`bg-${getStatusColor(
-                  status
-                )} px-1 mx-1 rounded w-fit text-sm`}
+                className={`bg-${getStatusColor(status)} px-1 mx-1 rounded w-fit text-sm`}
               >
                 {status}
               </h3>
