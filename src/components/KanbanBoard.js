@@ -240,7 +240,7 @@ const KanbanBoard = () => {
         </div>
       ))}
        <div className="w-[269px] group rounded-lg flex-shrink-0 hover:bg-slate-50 hover:text-gray-800 border-dashed border-2 transition-colors border-gray-300 hover:border-gray-400" onClick={openAddStatusModal}>
-        <div className="flex justify-center items-center h-36 transition-colors    rounded-lg cursor-pointer">
+        <div className="flex h-full items-center justify-center items-centertransition-colors rounded-lg cursor-pointer">
           <PlusIcon className="w-5 h-5 transition-colors text-gray-400 group-hover:text-gray-500" />
         </div>
       </div>
