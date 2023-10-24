@@ -52,7 +52,6 @@ const KanbanBoard = () => {
   };
 
   const openViewTaskModal = (task) => {
-    console.log("Function called", isViewTaskOpen)
     setSelectedTask(task);
     setIsViewTaskOpen(true);
   };
@@ -143,6 +142,14 @@ const KanbanBoard = () => {
     );
     setTasks(updatedTasks);
     closeViewTaskModal();
+  };
+
+  const deleteTask = () => {
+    if (selectedTask) {
+      const updatedTasks = tasks.filter((task) => task.id !== selectedTask.id);
+      setTasks(updatedTasks);
+      closeViewTaskModal();
+    }
   };
 
   return (
@@ -258,7 +265,7 @@ const KanbanBoard = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-[32rem] transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <input
                     placeholder="Add title"
                     type="text"
@@ -319,7 +326,7 @@ const KanbanBoard = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-[32rem] transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <input
                     placeholder="Add title"
                     type="text"
@@ -338,7 +345,7 @@ const KanbanBoard = () => {
                     placeholder="Add description"
                   ></textarea>
 
-                  <div className="mt-4">
+                  <div className="mt-4 space-x-2">
                     <button
                       type="button"
                       className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover-bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
@@ -349,10 +356,10 @@ const KanbanBoard = () => {
                     </button>
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover-bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={closeViewTaskModal}
+                      className="inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover-bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+                      onClick={deleteTask}
                     >
-                      Close
+                      Delete task
                     </button>
                   </div>
                 </Dialog.Panel>
