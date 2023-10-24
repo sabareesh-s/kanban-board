@@ -201,7 +201,7 @@ const KanbanBoard = () => {
   // };
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4 overflow-y-auto">
       {statuses.map((status, index) => (
         <div
           key={index}
@@ -210,7 +210,7 @@ const KanbanBoard = () => {
           onDrop={(e) => handleDrop(e, status)}
         >
           <div className="flex justify-between">
-            <div className="flex gap-2">
+            <div className="flex gap-2 pb-1.5">
               <h3
                 className={`${status === 'Not Started' ? 'bg-red-200' : status === 'In Progress' ? 'bg-yellow-200' : status === 'Completed' ? 'bg-green-200' : 'bg-blue-200'} px-1 mx-1 rounded w-fit text-sm`}
               >
@@ -232,7 +232,7 @@ const KanbanBoard = () => {
           {renderTaskCards(status)}
           <button
             onClick={() => openCreateModal(status)}
-            className="bg-white p-2 mt-2 text-sm cursor-pointer text-gray-400 hover:text-gray-800 flex gap-1 items-center justify-center  transition-colors"
+            className="bg-white p-2 mt-2 b-2 text-sm cursor-pointer text-gray-400 hover:text-gray-800 flex gap-1 items-center justify-center  transition-colors"
           >
             <PlusIcon className="w-5 h-5" />
             <div className="">New</div>
