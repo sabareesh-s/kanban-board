@@ -3,9 +3,8 @@ import KanbanBoard from './components/KanbanBoard';
 
 function App() {
   return (
-    <main className="md:w-screen h-screen flex md:justify-center items-start pt-16 p-4 bg-[url('https://i.imgur.com/QzikZzo.jpg')] md:bg-cover">
-      {/* <h1 className="font-semibold text-2xl">Kanban Board</h1> */}
-      <section className='max-w-[840px] flex-shrink-0 p-4 bg-white rounded-xl shadow-md border backdrop-blur-sm'>
+    <main className="w-screen h-screen flex p-4 bg-[url('https://i.imgur.com/QzikZzo.jpg')] bg-cover">
+      <section className='max-w-full h-fit p-4 bg-white rounded-xl shadow-md border overflow-y-auto'>
         <KanbanBoard />
       </section>
     </main>
@@ -13,3 +12,4 @@ function App() {
 }
 
 export default App;
+
