@@ -1,9 +1,11 @@
-import "./App.css";
+import React from 'react';
+import KanbanBoard from './components/KanbanBoard';
 
 function App() {
   return (
-    <div className="App">
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
+    <div className="">
+      {/* <h1 className="">Kanban Board</h1> */}
+      <KanbanBoard />
     </div>
   );
 }
