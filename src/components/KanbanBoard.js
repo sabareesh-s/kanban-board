@@ -187,18 +187,18 @@ const KanbanBoard = () => {
     }
   };
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "Not Started":
-        return "red-200";
-      case "In Progress":
-        return "yellow-200";
-      case "Completed":
-        return "green-200";
-      default:
-        return "blue-200"; // Default color for unknown statuses
-    }
-  };
+  // const getStatusColor = (status) => {
+  //   switch (status) {
+  //     case "Not Started":
+  //       return "red-200";
+  //     case "In Progress":
+  //       return "yellow-200";
+  //     case "Completed":
+  //       return "green-200";
+  //     default:
+  //       return "blue-200"; // Default color for unknown statuses
+  //   }
+  // };
 
   return (
     <div className="flex gap-4">
@@ -212,7 +212,7 @@ const KanbanBoard = () => {
           <div className="flex justify-between">
             <div className="flex gap-2">
               <h3
-                className={`bg-${getStatusColor(status)} px-1 mx-1 rounded w-fit text-sm`}
+                className={`${status === 'Not Started' ? 'bg-red-200' : status === 'In Progress' ? 'bg-yellow-200' : status === 'Completed' ? 'bg-green-200' : 'bg-blue-200'} px-1 mx-1 rounded w-fit text-sm`}
               >
                 {status}
               </h3>
