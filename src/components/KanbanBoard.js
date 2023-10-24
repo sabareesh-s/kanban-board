@@ -9,49 +9,62 @@ const KanbanBoard = () => {
     {
       id: 1,
       title: "Task 1",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
       status: "Not Started",
     },
     {
       id: 2,
       title: "Task 2",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
       status: "Not Started",
     },
     {
       id: 3,
       title: "Task 3",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
       status: "In Progress",
     },
     {
       id: 4,
       title: "Task 4",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
       status: "In Progress",
     },
     {
       id: 5,
       title: "Task 5",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
       status: "Completed",
     },
   ]);
 
-  let [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [newTaskTitle, setNewTaskTitle] = useState("");
+  const [newTaskDescription, setNewTaskDescription] = useState("");
+  const [newTaskStatus, setNewTaskStatus] = useState("Not Started");
+  const [isViewTaskOpen, setIsViewTaskOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
-  function closeCreateModal() {
+  const closeViewTaskModal = () => {
+    setIsViewTaskOpen(false);
+    setSelectedTask(null);
+  };
+
+  const openViewTaskModal = (task) => {
+    console.log("Function called", isViewTaskOpen)
+    setSelectedTask(task);
+    setIsViewTaskOpen(true);
+  };
+
+  const closeCreateModal = () => {
     setIsCreateModalOpen(false);
-  }
+  };
 
-  function openCreateModal() {
+  const openCreateModal = (status) => {
     setIsCreateModalOpen(true);
-  }
+    setNewTaskStatus(status);
+  };
 
   const handleDragStart = (e, taskId, currentStatus) => {
     e.dataTransfer.setData("taskId", taskId);
@@ -89,8 +102,47 @@ const KanbanBoard = () => {
           title={task.title}
           status={task.status}
           onDragStart={handleDragStart}
+          onClick={() => openViewTaskModal(task)}
         />
       ));
+  };
+
+  const addTask = () => {
+    if (newTaskTitle && newTaskDescription) {
+      const newTask = {
+        id: tasks.length + 1,
+        title: newTaskTitle,
+        description: newTaskDescription,
+        status: newTaskStatus,
+      };
+
+      setTasks([...tasks, newTask]);
+      closeCreateModal();
+      setNewTaskTitle("");
+      setNewTaskDescription("");
+      setNewTaskStatus("Not Started");
+    }
+  };
+
+  const handleTaskTitleChange = (e) => {
+    const newTitle = e.target.value;
+    setSelectedTask({ ...selectedTask, title: newTitle });
+    setIsSaveButtonDisabled(!newTitle || !selectedTask.description);
+  };
+
+  const handleTaskDescriptionChange = (e) => {
+    const newDescription = e.target.value;
+    setSelectedTask({ ...selectedTask, description: newDescription });
+    setIsSaveButtonDisabled(!selectedTask.title || !newDescription);
+  };
+
+  const saveTask = () => {
+    // Update the task in your tasks list with the modified task
+    const updatedTasks = tasks.map((task) =>
+      task.id === selectedTask.id ? selectedTask : task
+    );
+    setTasks(updatedTasks);
+    closeViewTaskModal();
   };
 
   return (
@@ -104,19 +156,18 @@ const KanbanBoard = () => {
           <h3 className="bg-red-200 px-1 mx-1 rounded w-fit text-sm">
             Not started
           </h3>
-
           <div className="space-x-1 p-0 h-0">
             <button>
               <EllipsisIcon className="w-5 h-5 text-gray-400 hover:text-gray-800" />
             </button>
-            <button onClick={openCreateModal}>
+            <button onClick={() => openCreateModal("Not Started")}>
               <PlusIcon className="w-5 h-5 text-gray-400 hover:text-gray-800" />
             </button>
           </div>
         </div>
         {renderTaskCards("Not Started")}
         <button
-          onClick={openCreateModal}
+          onClick={() => openCreateModal("Not Started")}
           className="bg-white p-2 mt-2 text-sm cursor-pointer text-gray-400 hover:text-gray-800 flex gap-1 items-center justify-center"
           draggable
         >
@@ -137,13 +188,14 @@ const KanbanBoard = () => {
             <button>
               <EllipsisIcon className="w-5 h-5 text-gray-400 hover:text-gray-800" />
             </button>
-            <button>
+            <button onClick={() => openCreateModal("In Progress")}>
               <PlusIcon className="w-5 h-5 text-gray-400 hover:text-gray-800" />
             </button>
           </div>
         </div>
         {renderTaskCards("In Progress")}
         <button
+          onClick={() => openCreateModal("In Progress")}
           className="bg-white p-2 mt-2 text-sm cursor-pointer text-gray-400 hover:text-gray-800 flex gap-1 items-center justify-center"
           draggable
         >
@@ -164,13 +216,14 @@ const KanbanBoard = () => {
             <button>
               <EllipsisIcon className="w-5 h-5 text-gray-400 hover:text-gray-800" />
             </button>
-            <button>
+            <button onClick={() => openCreateModal("Completed")}>
               <PlusIcon className="w-5 h-5 text-gray-400 hover:text-gray-800" />
             </button>
           </div>
         </div>
         {renderTaskCards("Completed")}
         <button
+          onClick={() => openCreateModal("Completed")}
           className="bg-white p-2 mt-2 text-sm cursor-pointer text-gray-400 hover:text-gray-800 flex gap-1 items-center justify-center"
           draggable
         >
@@ -206,34 +259,100 @@ const KanbanBoard = () => {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  {/* <Dialog.Title
-                    as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
-                  >
-                    Add task
-                  </Dialog.Title> */}
-
                   <input
                     placeholder="Add title"
                     type="text"
+                    value={newTaskTitle}
+                    onChange={(e) => setNewTaskTitle(e.target.value)}
                     id="base-input"
-                    class="bg-gray-50 border outline-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    className="bg-gray-50 border outline-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   />
 
                   <textarea
                     id="message"
                     rows="4"
-                    class="block mt-2 p-2.5 w-full outline-none text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                    value={newTaskDescription}
+                    onChange={(e) => setNewTaskDescription(e.target.value)}
+                    className="block mt-2 p-2.5 w-full outline-none text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Add description"
                   ></textarea>
 
                   <div className="mt-4">
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={closeCreateModal}
+                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover-bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      onClick={addTask}
                     >
                       Create new task
+                    </button>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
+
+      {/* View task modal */}
+      <Transition appear show={isViewTaskOpen} as={Fragment}>
+        <Dialog as="div" className="relative z-10" onClose={closeViewTaskModal}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-25" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                  <input
+                    placeholder="Add title"
+                    type="text"
+                    value={selectedTask ? selectedTask.title : ""}
+                    onChange={handleTaskTitleChange}
+                    id="base-input"
+                    className="bg-gray-50 border outline-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  />
+
+                  <textarea
+                    id="message"
+                    rows="4"
+                    value={selectedTask ? selectedTask.description : ""}
+                    onChange={handleTaskDescriptionChange}
+                    className="block mt-2 p-2.5 w-full outline-none text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Add description"
+                  ></textarea>
+
+                  <div className="mt-4">
+                    <button
+                      type="button"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover-bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      onClick={saveTask}
+                      disabled={isSaveButtonDisabled}
+                    >
+                      Save
+                    </button>
+                    <button
+                      type="button"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover-bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      onClick={closeViewTaskModal}
+                    >
+                      Close
                     </button>
                   </div>
                 </Dialog.Panel>
